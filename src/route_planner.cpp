@@ -45,6 +45,11 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node)
     }
 }
 
+bool Compare(RouteModel::Node *a, RouteModel::Node *b)
+{
+    return a->h_value + a->g_value < b->h_value + b->g_value;
+}
+
 // TODO 5: Complete the NextNode method to sort the open list and return the next node.
 // Tips:
 // - Sort the open_list according to the sum of the h value and g value.
@@ -54,6 +59,13 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node)
 
 RouteModel::Node *RoutePlanner::NextNode()
 {
+    // TODO: check we are sorting correctly
+    std::sort(open_list.begin(), open_list.end(), Compare);
+    if (open_list.empty())
+        return nullptr;
+    RouteModel::Node *current_node = open_list.front();
+    open_list.erase(open_list.begin());
+    return current_node;
 }
 
 // TODO 6: Complete the ConstructFinalPath method to return the final path found from your A* search.
